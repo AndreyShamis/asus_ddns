@@ -103,7 +103,7 @@ main(){
         "register")
             ;;
         "update")
-            if is_dns_updated
+	    if is_dns_updated
             then
                 log "Domain already updated."
                 return
@@ -142,13 +142,27 @@ usage(){
     echo "ASUSddns script by BigNerd95 (https://github.com/BigNerd95/ASUSddns)"
 }
 
-if [ $# -eq 5 ]
+my_ip=$(dig @resolver1.opendns.com ANY myip.opendns.com +short)
+echo "MY IP: " $my_ip
+server_ip=$(host werd.asuscomm.com 8.8.8.8 | grep "has address" | awk '{print $4}')
+echo "SERVER IP: " $server_ip
+if [ $my_ip = $server_ip ]
 then
-    user=$(strip_dots_colons $1)
-    key=$2
-    host="$3.asuscomm.com"
-    mode=$4
-    output=$5
+	echo "IP is same"
+	exit 0
+else
+	echo "Need to update"
+	# return ./update.sh 
+fi
+set -x
+if [ $# -eq 0 ]
+then
+    mac="30:5A:3A:4D:93:F0"
+    user=$(strip_dots_colons $mac)
+    key="12345678"
+    host="werd.asuscomm.com"
+    mode="register"
+    output="console"
 
     wanIP=$(get_wan_ip)
     if [ -n "${wanIP}" ]
