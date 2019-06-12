@@ -144,7 +144,7 @@ usage(){
 
 my_ip=$(dig @resolver1.opendns.com ANY myip.opendns.com +short)
 echo "MY IP: " $my_ip
-server_ip=$(host werd.asuscomm.com 8.8.8.8 | grep "has address" | awk '{print $4}')
+server_ip=$(host werd.asuscomm.com ns1.asuscomm.com | grep "has address" | awk '{print $4}')
 echo "SERVER IP: " $server_ip
 if [ $my_ip = $server_ip ]
 then
